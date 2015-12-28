@@ -3,6 +3,17 @@
 Wulp allows you to define [Gulp](http://gulpjs.com/) tasks that can be run directly, and also via a `watch` task.
 
 
+## Registering Wulp
+
+Wulp tasks don't do anything on their own; you must first register them with gulp via `wulp.register`:
+
+```js
+// Registers all wulp tasks as gulp tasks, and creates a task called `watch`
+// that watches for changes.
+wulp.register(gulp, 'watch');
+```
+
+
 ## Defining a Task
 
 ```js
@@ -21,18 +32,6 @@ wulp.task('test:style', ['{src,test}/**/*.js'], (srcs) => {
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
 });
-```
-
-
-## Registering Tasks With Gulp
-
-Wulp tasks don't do anything on their own; you must register them with gulp via
-`wulp.register`:
-
-```js
-// Registers all wulp tasks as gulp tasks, and creates a task called `watch`
-// that watches for changes.
-wulp.register(gulp, 'watch');
 ```
 
 
