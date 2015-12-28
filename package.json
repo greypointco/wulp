@@ -1,8 +1,14 @@
 {
   "name": "wulp",
   "version": "0.0.0",
-  "private": true,
+  "description": "Gulp tasks that can be run directly or as part of a watch task.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "gulp",
+    "watch"
+  ],
   "main": "src",
+  "repository": "greypointco/wulp",
   "dependencies": {
     "debug": "^2.2.0",
     "gulp-util": "^3.0.7",
