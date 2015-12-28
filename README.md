@@ -48,5 +48,9 @@ The supported options are:
 `runAll`: Accepts an array of glob expressions.  When a file matching that expression changes, the task will be run with all files matching the primary glob.  Great for re-running all tests after changing test configuration, for example.
 
 
+## License
+
+This project is covered under the [Apache License, version 2.0](./APACHEv2-LICENSE.md).
+
 [npm-url]: https://npmjs.org/package/wulp
 [npm-image]: http://img.shields.io/npm/v/wulp.svg
