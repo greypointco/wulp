@@ -1,6 +1,6 @@
 {
   "name": "wulp",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Gulp tasks that can be run directly or as part of a watch task.",
   "license": "Apache-2.0",
   "keywords": [
