@@ -1,6 +1,7 @@
 var debug = require('debug')('wulp');
 var micromatch = require('micromatch');
 var prettyMs = require('pretty-ms');
+var stacky = require('stacky');
 var streamArray = require('stream-array');
 var util = require('gulp-util');
 var watch = require('gulp-watch');
@@ -131,7 +132,7 @@ Wulp.prototype._runNextTask = function _runNextTask() {
     var duration = util.colors.magenta(prettyMs(Date.now() - startTime));
 
     if (error) {
-      this._log(util.colors.red('Task "' + nextTaskName + '" failed in ' + duration));
+      this._log(util.colors.red('\nTask "' + nextTaskName + '" failed in ' + duration +':\n') + this._prettyError(error));
     } else {
       this._log('Completed task "' + nextTaskName + '" in ' + duration);
     }
@@ -182,6 +183,17 @@ Wulp.prototype._prettyTasks = function _prettyTasks(taskNames) {
   return taskNames.map(function(taskName) {
     return "'" + util.colors.cyan(taskName) + "'";
   }).join(', ');
+}
+
+Wulp.prototype._prettyError = function _prettyError(error) {
+  if (!error.stack) return String(error);
+
+  return stacky.pretty(error.stack, {
+    indent: '  ',
+    filter: function(line) {
+      return line.location.match(/\/node_modules\//);
+    },
+  });
 }
 
 module.exports = new Wulp({});
