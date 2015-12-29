@@ -132,7 +132,7 @@ Wulp.prototype._runNextTask = function _runNextTask() {
     var duration = util.colors.magenta(prettyMs(Date.now() - startTime));
 
     if (error) {
-      this._log(util.colors.red('\nTask "' + nextTaskName + '" failed in ' + duration +':\n') + this._prettyError(error));
+      this._log(util.colors.red('\nTask "' + nextTaskName + '" failed in ' + duration +':\n\n  ') + this._prettyError(error));
     } else {
       this._log('Completed task "' + nextTaskName + '" in ' + duration);
     }
@@ -188,12 +188,14 @@ Wulp.prototype._prettyTasks = function _prettyTasks(taskNames) {
 Wulp.prototype._prettyError = function _prettyError(error) {
   if (!error.stack) return String(error);
 
-  return stacky.pretty(error.stack, {
-    indent: '  ',
+  const stack = stacky.pretty(error.stack, {
+    indent: '    ',
     filter: function(line) {
       return line.location.match(/\/node_modules\//);
     },
   });
+
+  return '  ' + util.colors.red(error.message) + '\n' + stack;
 }
 
 module.exports = new Wulp({});
