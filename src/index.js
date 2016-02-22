@@ -86,10 +86,10 @@ Wulp.prototype._onFileChanged = function _onFileChanged(file) {
   Object.keys(this.tasks).forEach(function(taskName) {
     var task = this.tasks[taskName];
 
-    if (micromatch.any(file.relative, task.runAll, MICROMATCH_OPTIONS)) {
+    if (micromatch(file.relative, task.runAll, MICROMATCH_OPTIONS).length) {
       tasksToRun.push(taskName);
       this._enqueueTask(taskName, true);
-    } else if (micromatch.any(file.relative, task.globs, MICROMATCH_OPTIONS)) {
+    } else if (micromatch(file.relative, task.globs, MICROMATCH_OPTIONS).length) {
       tasksToRun.push(taskName);
       this._enqueueTask(taskName, file);
     }
@@ -145,9 +145,14 @@ Wulp.prototype._runNextTask = function _runNextTask() {
 Wulp.prototype._runTask = function _runTask(taskName, files, callback) {
   var task = this.tasks[taskName];
 
-  var inputStream  = Array.isArray(files)
-    ? streamArray(files)
-    : this._gulp.src(task.globs, {base: process.cwd()});
+  var inputStream;
+  if (Array.isArray(files)) {
+    debug('_runTask', taskName, 'with files:', files.map(function(f) { return f.relative; }));
+    inputStream = streamArray(files);
+  } else {
+    debug('_runTask', taskName, 'with globs:', task.globs);
+    inputStream = this._gulp.src(task.globs, {base: process.cwd()});
+  }
   var outputStream = task.runner(inputStream);
 
   var onComplete = function onComplete(error) {
